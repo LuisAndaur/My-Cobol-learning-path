@@ -48,7 +48,7 @@
            STOP RUN.
 
        PROCEDIMIENTO-DE-APERTURA.
-           OPEN OUTPUT empleados-archivo.
+           OPEN EXTEND empleados-archivo.
 
        PROCEDIMIENTO-DE-CIERRE.
            CLOSE empleados-archivo.
@@ -59,7 +59,12 @@
            PERFORM OBTENER-DATOS
            UNTIL entrada = "S".
 
+           PERFORM ESCRIBIR-REGISTRO.
+           PERFORM REINICIAR.
+
        OBTENER-DATOS.
+           MOVE SPACE TO empleados-registro.
+
            DISPLAY "Introduce ID del empleado: ".
            ACCEPT empleados-id.
 
@@ -78,16 +83,23 @@
            DISPLAY "Introduce direccion del empleado: ".
            ACCEPT empleados-direccion.
 
+           PERFORM FIN-CARGA.
+
+       ESCRIBIR-REGISTRO.
            WRITE empleados-registro.
 
+       REINICIAR.
            DISPLAY "¿Desea almacenar otro registro en la base de datos?"
            "(s/n)".
            ACCEPT si-no.
 
-           IF si-no = "s" OR "S"
+           IF si-no = "s" OR si-no = "S"
                MOVE "S" TO  si-no
                ELSE
                    MOVE "N" TO  si-no
            END-IF.
+
+       FIN-CARGA.
+           MOVE "S" TO entrada.
 
        END PROGRAM "ALTA_EMPLEADO_I".
